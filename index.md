@@ -32,6 +32,8 @@
 
 [2020/02/20 - Egghunter x86, wow64 et x64 sur windows 10](2020/02/20/egghunter.md)
 
+[2020/02/13 - Injection de DLL via NtCreateThreadEx()](2020/02/13/injection-dll-ntCreateThreadEx.md)
+
 [2020/01/26 - Shellcode NetLocalGroupAddMembers()](2020/01/26/shellcode-NetLocalGroupAddMembers.md)
 
 [2020/01/23 - Injection de dll via CreateRemoteThread()](2020/01/23/injection-dll-createRemoteThread.md)
