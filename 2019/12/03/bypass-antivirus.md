@@ -4,7 +4,7 @@ Est présentée ici, une simple démonstration d'une technique de contournement 
 
 Pour illustrer le propos, je vais utiliser un downloader. Le downloader permet en général de télécharger une payload plus volumineuse, mais dans ce cas précis, il me servira à télécharger une image. Donc rien de bien malveillant. Afin de télécharger du contenu, la documentation de l'API de Microsoft (MSDN) nous conseille d'utiliser la fonction __URLDownloadToFile__ qui est contenue dans la librairie __Urlmon.dll__
 
-![image alt text](/images/blog/URLDownloadToFile.png)
+![image alt text](/images/bypass-antivirus/URLDownloadToFile.png)
 
 J'ai écrit le downloader en assembleur MASM x86 et j'ai utilisé le compilateur MASM32 pour le compiler. Ci dessous est présenté le code de base du downloader utilisé dans cet article.
 
@@ -52,7 +52,7 @@ pause
 
 La compilation fonctionne, et pourtant l'executable n'apparait pas dans le dossier source car celui-ci a été intercepté par l'AV comme on peut le voire ci-dessous:
 
-![image alt text](/images/blog/symantec.png)
+![image alt text](/images/bypass-antivirus/symantec.png)
 
 Comme le downloader est vraiment très simple, on en conclut que le simple appel à la fonction __URLDownloadToFile__ classe le programme dans la catégorie __Suspicious__ et met alors le programme en quarantaine. Rappelons que le downloader cherche simplement à télécharger une photo .. C'est un peu abusif de la part de l'AV ..
 
@@ -213,7 +213,7 @@ end start
 
 Ci-dessous on peut voir que la fonction __GetProcAddress__ n'apparait plus dans la table des imports (IAT: Import Address Table).
 
-![image alt text](/images/blog/cffexplorer.png)
+![image alt text](/images/bypass-antivirus/cffexplorer.png)
 
 Certains AV peuvent encore regarder dans la section .data et trouver en clair les chaines de charactères __UrlDownloadToFileA__, __LoadLibrary__ et __GetProcAddress__, ce qui peut paraitre suspect. Il suffit dans ce cas d'encoder ces chaines de charactères avec un __xor__, ou un __add__, ... puis de les décoder lors de l'execution du programme.
 
