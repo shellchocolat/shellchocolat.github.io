@@ -18,6 +18,8 @@
 
 [2020/03/25 - Injection de dll via QueueUserAPC()](2020/03/25/injection-dll-queueUserAPC.md)
 
+[2020/03/22 - Bloquer l'injection de DLL](2020/03/22/injection-dll-block.md)
+
 [2020/03/18 - Persistance et hijack d'extensions](2020/03/18/persistance-hijack-extension.md)
 
 [2020/03/12 - Injection de dll via SetWindowsHookEx()](2020/03/12/injection-dll-setWindowsHookEx.md)
