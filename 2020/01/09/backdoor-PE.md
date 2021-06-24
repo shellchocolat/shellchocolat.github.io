@@ -9,7 +9,7 @@ Le PE que je vais utiliser est un classique, il s'agit de __putty__ en version _
 
 Lorsque l'image de l'exécutable est chargée en mémoire, la "première" instruction à être exécutée se situe à l'__entry point__, comme on peut le voir sur la capture ci-dessous.
 
-![image alt text](/images/blog/backdoor-PE/oep.png)
+![image alt text](/images/backdoor-PE/oep.png)
 
 On y voit plusieurs choses importantes à retenir:
 
@@ -37,32 +37,32 @@ Une PE contient plusieurs sections, comme par exemple .text, .data, .rdata, ... 
 
 Les sections ainsi que les permissions associées de putty sont présentées sur la capture ci-dessous.
 
-![image alt text](/images/blog/backdoor-PE/sections.png)
+![image alt text](/images/backdoor-PE/sections.png)
 
 Il faut donc ajouter une section __RE__ à notre image afin de pouvoir lire et exécuter du code. Pour ajouter une section et ajuster les permissions, j'utilise l'outil __LordPE__. J'ajoute une section que j'appelle __.PWNEY__ et je lui attribue une taille de __1000 octets__ avec les permissions __RWE__ (writeable juste au cas où j'ai envie de faire du code automodifiable à l'intérieur en utilisant un encodeur par exemple).
 
 On peut voir ces modifications sur la capture ci-dessous.
 
-![image alt text](/images/blog/backdoor-PE/newsections.png)
+![image alt text](/images/backdoor-PE/newsections.png)
 
 A cette étape, on a juste ajouté une section, mais aucune modification au PE n'a été effectuée. On peut le constater rapidement en regardant la taille de celui-ci. On y a ajouté une section de 1000 octets, il devrait donc être plus gros de 1000 octets. Or il n'en est rien, on a en réalité juste spécifier que la section __.PWNEY__ doit faire 1000 octets. Il faut pour cela lui ajouter du code afin de remplir la nouvelle section. Pour cela j'utilise __HxD__. Afin de savoir où ajouter du code, je regarde sur la figure précédente, la ligne __RawOffset__ qui me donne un offset et qui est donc indépendant de l'ASLR. C'est à cet emplacement que je vais ajouter du code (1000 octets) pour remplir la section, comme on peut le voir ci-dessous.
 
-![image alt text](/images/blog/backdoor-PE/fillbytes.png)
+![image alt text](/images/backdoor-PE/fillbytes.png)
 
 On peut maintenant modifer l'EP afin d'effectuer un jmp vers cette section. Cependant, un petit problème surviendra au moment d'un reboot de la machine ou bien lors de l'exécution de l'image sur un autre ordinateur. En effet, l'ASLR est activé par défaut, ce qui rend aléatoire les adresses mémoires. Dans un premier temps, désactivons l'ASLR pour ce binaire en particulier. J'utilise pour cela __CFF explorer__ comme présenté sur la figure suivante (il faut décocher la case __DLL can move__):
 
 
-![image alt text](/images/blog/backdoor-PE/aslr.png)
+![image alt text](/images/backdoor-PE/aslr.png)
 
 L'entry point sera alors différent de ci-dessus, mais sera toujours le même lors d'un reboot de la machine.
 
-![image alt text](/images/blog/backdoor-PE/newoep.png)
+![image alt text](/images/backdoor-PE/newoep.png)
 
 L'adresse mémoire de la section __.PWNEY__ est alors __0x1400D6000__. On remarque au passage que la partie basse de l'adresse est la même: 6000. En effet, la randomization des adresses ne s'effectue que sur la partie haute, tandis que la partie basse retranscrit en quelque sorte les offsets.
 
 Il faut alors patcher l'entry point avec un __jmp 0x1400D6000__ afin de jumper sur la section __.PWNEY__.
 
-![image alt text](/images/blog/backdoor-PE/patchoep.png)
+![image alt text](/images/backdoor-PE/patchoep.png)
 
 Le fait d'avoir remplacer le __sub esp, 0x28__ par un __jmp 0x14006000__ a modifié les instructions suivantes. En effet le nombre de bytes utilisés pour coder l'instruction __sub esp, 0x28__ n'est pas le même que celui utilisé pour coder l'instruction __jmp 0x140D6000__. 
 
@@ -70,15 +70,15 @@ Suite à l'exécution de notre patch dans la section __.PWNEY__ il faudra effect
 
 On peut commencer à travailler dans la zone mémoire liée à la section __.PWNEY__. Il faut d'abord sauvegarder l'état des registres et des flags afin de les restaurer ensuite. Comme il n'existe pas d'instruction pour pusher sur la stacks l'ensemble des registres étendues (rax, rbx, ...) comme il y a pour du x86 (__pushad__ push sur la stack eax, ebx, ...), il va falloir le faire à la main. Il faut aussi sauvegarder les flags avec l'instruction __pushfq__ (__pushfd__ en x86)
 
-![image alt text](/images/blog/backdoor-PE/pushreg.png)
+![image alt text](/images/backdoor-PE/pushreg.png)
 
 A la fin de la zone mémoire liée à la section __.PWNEY__, il faudra faire l'étape inverse.
 
-![image alt text](/images/blog/backdoor-PE/popreg.png)
+![image alt text](/images/backdoor-PE/popreg.png)
 
 Il faut ensuite ajouter les instructions que l'on a patché à l'entry point ainsi que le jump vers l'instruction qui suit l'entry point pour reprendre le flot normal d'exécution du PE.
 
-![image alt text](/images/blog/backdoor-PE/end.png)
+![image alt text](/images/backdoor-PE/end.png)
 
 Avant d'insérer du code malveillant entre la "zone de push" et la "zone de pop", il faut maintenant enregistrer les modifications et vérifier que le programme fonctionne toujours. Si ce n'est pas le cas, il y a probablement un problème avec les registres où l'alignement de la stack. Il faut donc vérifier cela en premier.
 
