@@ -24,7 +24,9 @@
 
 [2020/03/12 - Injection de dll via SetWindowsHookEx()](2020/03/12/injection-dll-setWindowsHookEx.md)
 
-[2020/03/05 - L'encodeur Zutto Dekiru de A à Z](2020/03/05/encoder-zutto-dekiru..md)
+[2020/03/05 - L'encodeur Zutto Dekiru de A à Z](2020/03/05/encoder-zutto-dekiru.md)
+
+[2020/02/28 - L'encodeur Shikata Ga Nai de A à Z](2020/02/28/encoder-shikataGaNai.md)
 
 [2020/02/26 - Injection de DLL via RtlCreateUserThread()](2020/02/26/injection-dll-rtlCreateUserThread.md)
 
