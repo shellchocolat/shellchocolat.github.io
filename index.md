@@ -24,6 +24,8 @@
 
 [2020/01/26 - Shellcode NetLocalGroupAddMembers()](2020/01/26/shellcode-NetLocalGroupAddMembers.md)
 
+[2020/01/23 - Injection de dll via CreateRemoteThread()](2020/01/23/injection-dll-createRemoteThread.md)
+
 [2020/01/16 - Get system using named pipes](2020/01/16/get-system.md)
 
 [2020/01/09 - Backdoor d'exécutable](2020/01/09/backdoor-PE.md)
