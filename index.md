@@ -6,6 +6,8 @@
 
 ## 2020
 
+[2020/12/04 - Mainframe: Decouverte 0.1](2020/12/04/mainframe-decouverte-1.md)
+
 [2020/05/17 - Bypass de l'AMSI (1 seul byte)](2020/05/17/bypass-AMSI.md)
 
 [2020/04/01 - Injection de code via Process Hollowing](2020/04/01/injection-code-process-hollowing.md)
