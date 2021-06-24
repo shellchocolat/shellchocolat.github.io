@@ -14,6 +14,8 @@
 
 [2020/04/01 - Injection de code via Process Hollowing](2020/04/01/injection-code-process-hollowing.md)
 
+[2020/03/27 - Cracking de licence 2](2020/03/27/cracking-licence-2.md)
+
 [2020/03/25 - Injection de dll via QueueUserAPC()](2020/03/25/injection-dll-queueUserAPC.md)
 
 [2020/03/18 - Persistance et hijack d'extensions](2020/03/18/persistance-hijack-extension.md)
@@ -37,6 +39,6 @@
 
 ## 2019
 
-[2019/12/15 - Cracking de licence](2019/12/15/cracking-licence.md)
+[2019/12/15 - Cracking de licence 1](2019/12/15/cracking-licence.md)
 
 [2019/12/03 - Bypass d'antivirus](2019/12/03/bypass-antivirus.md)
