@@ -6,6 +6,8 @@
 
 ## 2020
 
+[2020/12/07 - Mainframe: Decouverte 0.2](2020/12/07/mainframe-decouverte-2.md)
+
 [2020/12/04 - Mainframe: Decouverte 0.1](2020/12/04/mainframe-decouverte-1.md)
 
 [2020/05/17 - Bypass de l'AMSI (1 seul byte)](2020/05/17/bypass-AMSI.md)
