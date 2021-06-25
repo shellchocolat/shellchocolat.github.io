@@ -1,9 +1,16 @@
 
-DVRF (Damn Vulnerable Router Firmware) est un outil disponible sur github:
+
+Je vais étudier un firmware vulnérable: DVRF (Damn Vulnerable Router Firmware). Cet un outil disponible sur github:
 
 * https://github.com/praetorian-inc/DVRF
 
-C'est un firmware vulnerable contenant differentes vulnérabilités. 
+C'est un firmware vulnérable contenant differentes vulnérabilités:
+
+* stack overflow
+
+* heap overflow
+
+* use after free
 
 Commençons par vérifier si le firmware (DVRF_v03.bin) est analysable en utilisant __binwalk__ (https://github.com/ReFirmLabs/binwalk):
 
