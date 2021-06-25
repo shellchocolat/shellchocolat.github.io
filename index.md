@@ -2,7 +2,7 @@
 
 ## 2021
 
-[2021/06/25 - MIPS stack buffer overflow](2021/06/25/dvrf-stack-overflow.md)
+[2021/06/25 - MIPS stack buffer overflow: DVRF](2021/06/25/dvrf-stack-overflow.md)
 
 [2021/01/07 - Crack et malware](2021/01/07/crack-malware.md)
 
