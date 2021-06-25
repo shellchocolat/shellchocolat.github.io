@@ -9,7 +9,6 @@ Commençons par vérifier si le firmware (DVRF_v03.bin) est analysable en utilis
 
 ```
 $ binwalk DVRF_v03.bin
-binwalk DVRF_v03.bin
 
 DECIMAL       HEXADECIMAL     DESCRIPTION
 --------------------------------------------------------------------------------
@@ -19,7 +18,7 @@ DECIMAL       HEXADECIMAL     DESCRIPTION
 1648424       0x192728        Squashfs filesystem, little endian, non-standard signature, version 3.0, size: 6099215 bytes, 447 inodes, blocksize: 65536 bytes, created: 2016-03-10 04:34:22
 ```
 
-On remarque alors qu'il existe un système de fichier: __squashfs__. Il existe différente type de système de fichier en ce qui concerne les systèmes embarqués. Les plus connus sont:
+On remarque alors qu'il existe un système de fichier: __squashfs__. Il existe différents types de systèmes de fichiers en ce qui concerne les systèmes embarqués. Les plus connus sont:
 
 * squasfs
 * cramfs
@@ -27,7 +26,7 @@ On remarque alors qu'il existe un système de fichier: __squashfs__. Il existe d
 * yaffs2
 * ext2
 
-Souvent les systèmes de fichiers sont compressés. Les algorithmes de compréssion les plus souvent utilisés sont:
+Souvent les systèmes de fichiers sont compressés. Les algorithmes de compression les plus souvent utilisés sont:
 
 * LZMA
 * Gzip
@@ -35,9 +34,9 @@ Souvent les systèmes de fichiers sont compressés. Les algorithmes de compréss
 * Zlib
 * ARJ
 
-Dans le cas présent, le système de fichier (squashfs) n'est pas compressé.
+Dans le cas présent, le système de fichiers (squashfs) n'est pas compressé.
 
-On va utilisé __binwalk__ pour extraire le système de fichier et pouvoir naviguer dedans:
+On va utilisé __binwalk__ pour extraire le système de fichiers et pouvoir naviguer dedans:
 
 ```
 $ binwalk -eM DVRF_v03.bin
@@ -82,7 +81,7 @@ On obtient alors un système de fichier qui s'appelle __squashfs-root__ qui cont
 
 ![image alt text](/images/dvrf-stack-overflow/2021-06-25_08-57.png)
 
-Lorsque l'on regarde dans le dossier __pwnable__ on y trouve différents exercices avec un __README__ donnant les directives:
+Lorsque l'on regarde dans le dossier __pwnable__ on y trouve différents exercices avec un __README__ donnant les directives des exercices:
 
 ```
 ➜  _DVRF_v03.bin.extracted git:(master) ✗ tree squashfs-root/pwnable 
@@ -103,23 +102,23 @@ squashfs-root/pwnable
 
 Dans cet article, on va donc commencer par le 1er qui se trouve être __Intro/stack_bof_01__.
 
-Regardons ce qu'est cet executable:
+Prenons quelques informations sur cet exécutable:
 ```
 ➜  Intro git:(master) ✗ file stack_bof_01
-stack_bof_01: ELF 32-bit LSB executable, MIPS, MIPS32 version 1 (SYSV), dynamically linked, interpreter /lib/ld-uClibc.so.0, not stripped
+stack_bof_01: ELF 32-bit LSB exécutable, MIPS, MIPS32 version 1 (SYSV), dynamically linked, interpreter /lib/ld-uClibc.so.0, not stripped
 ```
 
-On voit qu'il s'agit d'un executable __MIPS__, __little endien__ (LSB) qui est dynamiquement lié. Le fait qu'il soit dynamiquement lié est important, on le verra ensuite.
+On voit qu'il s'agit d'un exécutable __MIPS__, __little endien__ (LSB) qui est dynamiquement lié. Le fait qu'il soit dynamiquement lié est important, on le verra ensuite.
 
-On a affaire à un executable MIPS, ce n'est donc pas la même architecture que mon linux Intel que j'utilise. Il faut donc émuler l'architecture MIPS pour pouvoir exécuter ce binaire. J'utilise pour cela __qemu-mipsel-static__. Le __el__ est significatif de __little endien__ et le static précise que le binaire qemu est compilé statiquement, c'est-à-dire qu'il embarque toutes les librairies dont il a besoin pour fonctionner. Lorsque je tente de l'exécuter (j'ai auparavant copier le binaire __qemu-mipsel-static__ dans le système de fichier), j'obtiens:
+On a affaire à un exécutable MIPS, ce n'est donc pas la même architecture que mon linux Intel que j'utilise. Il faut alors émuler l'architecture MIPS pour pouvoir exécuter ce binaire. J'utilise pour cela __qemu-mipsel-static__. Le __el__ est significatif de __little endien__ et le __static__ précise que le binaire qemu est compilé statiquement, c'est-à-dire qu'il embarque toutes les librairies dont il a besoin pour fonctionner. Lorsque je tente de l'exécuter (j'ai auparavant copié le binaire __qemu-mipsel-static__ dans le système de fichiers du firmware), j'obtiens:
 
 ![image alt text](/images/dvrf-stack-overflow/2021-06-25_09-06.png)
 
-On voit qu'il manque la librairie __ld-uClibc.so.0__. Et en effet, elle n'est pas présente sur mon système. En revanche, elle est présente dans le système de fichier du firmware comme on peut le voir ci-desssous:
+On voit qu'il manque la librairie __ld-uClibc.so.0__. Et en effet, elle n'est pas présente sur mon système. En revanche, elle est présente dans le système de fichiers du firmware, comme on peut le voir ci-desssous:
 
 ![image alt text](/images/dvrf-stack-overflow/2021-06-25_09-08.png)
 
-Ceci est du au fait que le binaire __stack_bof_01__ est compilé dynamiquement et qu'il a donc besoin de la librairie __ld-uClibc.so.0__ pour fonctionner. Il faut donc __ch__anger le répertoire __root__ en utilisant la commande __chroot__ de manière à ce que __stack_bof_01__ "croit" qu'il se trouve bien sur son système MIPS et qu'il puisse accéder à la librairie  __ld-uClibc.so.0__. Comme on __chroot__, on change la racine et c'est pourquoi il est important que le binaire __qemu-mipsel__ soit __static__ de manière à ne pas avoir besoin de dépendance (qui ne seront évidement pas disponible dans l'environnement __chrooté__).
+Ceci est du au fait que le binaire __stack_bof_01__ est compilé dynamiquement et qu'il a donc besoin de la librairie __ld-uClibc.so.0__ pour fonctionner. Il faut donc __changer__ le répertoire __root__ en utilisant la commande __chroot__ de manière à ce que __stack_bof_01__ "croit" qu'il se trouve bien sur son système MIPS et qu'il puisse accéder à la librairie  __ld-uClibc.so.0__. Comme on __chroot__, on change la racine et c'est pourquoi il est important que le binaire __qemu-mipsel__ soit __static__ de manière à ne pas avoir besoin de dépendance (qui ne seront évidement pas disponible dans l'environnement __chrooté__).
 
 En l'exécutant, on obtient:
 
@@ -129,7 +128,7 @@ Le binaire fonctionne correctement. On voit qu'il faut lui passer un argument (_
 
 ![image alt text](/images/dvrf-stack-overflow/2021-06-25_09-13.png)
 
-Si je lui passe beacoup de __A__, j'obtiens:
+Si je lui passe beaucoup de __A__, j'obtiens:
 
 ![image alt text](/images/dvrf-stack-overflow/2021-06-25_09-15.png)
 
@@ -143,21 +142,21 @@ Aa0Aa1Aa2Aa3Aa4Aa5Aa6Aa7Aa8Aa9Ab0Ab1Ab2Ab3Ab4Ab5Ab6Ab7Ab8Ab9Ac0Ac1Ac2Ac3Ac4Ac5Ac
 
 Maintenant que j'ai ma chaine de charactères uniques, il faut que je puisse débugger mon process virtualisé de manière à constater les valeurs présentes dans les registres.
 
-Pour cela, je vais utiliser __IDA__. Je charge le binaire dans __IDA__ en lui spécifiant l'architecture MIPS. Il y a peu de fonctions, et on trouve la fonction __strcpy()__ (vulnérable) dans la table des imports et la fonction __dat_shell__ (fonction qu'il faut appelé pour valider l'exercice et qui se trouve à l'adresse __0x00400950__) dans la table des exports:
+Pour cela, je vais utiliser __IDA__. Je charge le binaire dans __IDA__ en lui spécifiant l'architecture MIPS. Il y a peu de fonctions, et on trouve la fonction __strcpy()__ (vulnérable) dans la table des imports et la fonction __dat_shell()__ (fonction qu'il faut appeler pour valider l'exercice, voir le README. Elle se trouve à l'adresse __0x00400950__) dans la table des exports:
 
 ![image alt text](/images/dvrf-stack-overflow/2021-06-25_09-26.png)
 
 ![image alt text](/images/dvrf-stack-overflow/2021-06-25_09-27.png)
 
-Lorsque je regarde qu'elles sont les fonctions qui font référence à __dat_shell__, je me rend compte qu'il n'y en a aucune:
+Lorsque je regarde qu'elles sont les fonctions qui font référence à __dat_shell()__, je me rend compte qu'il n'y en a aucune:
 
 ![image alt text](/images/dvrf-stack-overflow/2021-06-25_09-27_1.png)
 
-Pour débugger un process lancé par __qemu__, il faut lui spécifier un port de debug avec l'option __-g__:
+Pour débugger un process lancé par __qemu__, il faut lui spécifier un port de debug avec l'option __-g__. Je prendrais __12345__:
 
 ![image alt text](/images/dvrf-stack-overflow/2021-06-25_09-29.png)
 
-Puis je dois récupérer un serveur de debug fournis par __IDA__. Il se trouve dans le dossier "C:\Program Files\IDA 7.0\dbgsrv" et il s'appelle __linux_server64__. Il me permettra de récupérer le contenu fournis par __qemu__ sur le port __12345__ et de le transférer à __IDA__:
+Puis je dois récupérer un serveur de debug fournis par __IDA__. Il se trouve dans le dossier "C:\Program Files\IDA 7.0\dbgsrv" et il s'appelle __linux_server64__. Il me permettra de récupérer le contenu fourni par __qemu__ sur le port __12345__ et de le transférer à __IDA__:
 
 ```
 $ ./linux_server64 -p 12345
@@ -166,7 +165,7 @@ Listening on 0.0.0.0:0...
 
 ```
 
-Il suffit alors à spécifer à __IDA__ que je veux écouter sur le port __12345__ et de lancer le debugging. J'obtiens alors mon seg fault
+Il suffit alors de spécifer à __IDA__ que je veux écouter sur le port __12345__ puis de lancer le debugging. J'obtiens alors mon seg fault !
 
 Je vois que le __PC__ contient __Ag8A__. Il faut alors que je détermine l'offset auquel se trouve cette valeur dans la chaine de charactères que j'ai passé à __stack_bof_01__. J'utilise alors un autre outil fourni par metasploit:
 
@@ -175,7 +174,7 @@ $ ./pattern_offset.rb -l 300 -q Ag8A
 [*] Exact match at offset 204
 ```
 
-Il faut donc que j'écrive __204__ charactères aléatoires puis que j'écrive une addresse en little endien (celle de __dat_shell__) de manière à jumper sur cette fonction car __PC__ pointera alors vers l'adresse de __dat_shell__ (__0x00400950__):
+Il faut donc que j'écrive __204__ charactères aléatoires puis que j'écrive une addresse en little endien (celle de __dat_shell()__) de manière à jumper sur cette fonction car __PC__ pointera alors vers l'adresse de __dat_shell()__ (__0x00400950__):
 
 ```
 AAAA..(204)..AAA [adresse de dat_shell]
@@ -183,7 +182,7 @@ AAAA..(204)..AAA [adresse de dat_shell]
 AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA`echo -e '\\x50\\x09\\x40\\x00'`
 ```
 
-Bon en pratique, il ne faut pas tout à faire mettre __0x00400950__. Au début de la fonction __dat_shell()__ se trouve 2 instructions qui peuvent poser problème:
+Bon en pratique, il ne faut pas tout à faire mettre __0x00400950__. En effet, au début de la fonction __dat_shell()__ se trouve 2 instructions qui peuvent poser problème:
 
 ![image alt text](/images/dvrf-stack-overflow/2021-06-25_10-14.png)
 
@@ -191,3 +190,6 @@ Le registre __gp__ pointe vers une __global area__ (une heap) qui contient les c
 
 ![image alt text](/images/dvrf-stack-overflow/2021-06-25_10-20.png)
 
+En faisant cet exercice, on se rend compte que la méthode d'exploitation d'un stack buffer overflow sur une architecture MIPS __est la même__ que sur une architecture Intel ! 
+
+Pour comprendre totalement le code assembleur MIPS, il faut passer un peu de temps à étudier les différents registres et mnémoniques. **Mips** à part ça, le principe est identique !
