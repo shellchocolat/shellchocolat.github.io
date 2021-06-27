@@ -2,27 +2,27 @@
 
 On va voir ici comment rooter un routeur __Tenda AC1200__ à partir d'un port série (__UART__). Le routeur ressemble à ceci:
 
-![image alt text](/images/router-tenda-ac1200-mu-mimo/IMG_20210626_082437701.jpg)
+![image alt text](/images/router-tenda-ac1200-mu-mimo/router.png)
 
 Une fois démonté, le PCB ressemble à:
 
-![image alt text](/images/router-tenda-ac1200-mu-mimo/IMG_20210626_082437701.jpg)
+![image alt text](/images/router-tenda-ac1200-mu-mimo/pcb_up.png)
 
 L'important est d'identifier les composants les plus importants. Parmi ceux-ci:
 
 * en haut, en jaune, une connectique ethernet (c'est un routeur ..)
 
-* en dessous, en noir, 2 JDX G3604D. Ce sont des modules magnétiques 1000 Base-T qui permettent de supporter les connections Gigabits et s'interface avec la connectique ethernet au dessus. La seule doc que j'ai pu trouver pour ce composant: https://datasheet.lcsc.com/szlcsc/1908071506_CND-tek-G3604D_C408884.pdf
+* en dessous, en noir, 2 JDX G3604D. Ce sont des modules magnétiques 1000 Base-T qui permettent de supporter les connections Gigabits et s'interfacent avec la connectique ethernet au dessus. La seule doc que j'ai pu trouver pour ce composant: https://datasheet.lcsc.com/szlcsc/1908071506_CND-tek-G3604D_C408884.pdf
 
 * en dessous, la grosse plaque noire (RTL8367RB), permet de manager les flux provenant des modules magnétiques 1000 Base-T. La documentation: https://datasheetspdf.com/pdf-file/1461443/Realtek/RTL8367RB/1
 
-* encore en dessous, protégé par un radiateur, probablement le microcontroleur
+* encore en dessous, protégé par un radiateur, probablement un microcontroleur
 
 * à sa droite, la petite plaque noire (RTL8812BRH), est un controleur WLAN 802.11ac/abgn. Je ne trouve pas de documentation dessus.
 
 Apparemement il n'y a pas de puce permettant de stocker le firmware. Etrange ... Il faut regarder sous le PCB:
 
-![image alt text](/images/router-tenda-ac1200-mu-mimo/IMG_20210626_083056215.jpg)
+![image alt text](/images/router-tenda-ac1200-mu-mimo/pcb_down.png)
 
 On y voit une seule puce:
 
@@ -38,7 +38,7 @@ Pour identifier les pins, il existe différentes méthodes. On peut utiliser un 
 
 Ci-dessous une vue clair du port de débug UART:
 
-![image alt text](/images/router-tenda-ac1200-mu-mimo/IMG_20210626_083259482.jpg)
+![image alt text](/images/router-tenda-ac1200-mu-mimo/uart.png)
 
 Je vais commencer par établir une hypothèse concernant les pins que je vérifierais ensuite à l'aide du multimètre.
 
@@ -64,7 +64,7 @@ De manière général, on utilise soit l'alimentation du routeur, soit l'aliment
 
 Une photo du montage branché est présenté ci-dessous:
 
-![image alt text](/images/router-tenda-ac1200-mu-mimo/IMG_20210626_090313628.jpg)
+![image alt text](/images/router-tenda-ac1200-mu-mimo/hydrabus.png)
 
 Comment trouver les pins sur l'Hydrabus? Easy, il suffit de le mettre en mode UART et de taper __show pins__:
 
