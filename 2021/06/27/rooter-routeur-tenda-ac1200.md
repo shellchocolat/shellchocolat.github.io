@@ -2,11 +2,11 @@
 
 On va voir ici comment rooter un routeur __Tenda AC1200__ à partir d'un port série (__UART__). Le routeur ressemble à ceci:
 
-![image alt text](/images/router-tenda-ac1200-mu-mimo/IMG_20210626_082437701.png)
+![image alt text](/images/router-tenda-ac1200-mu-mimo/IMG_20210626_082437701.jpg)
 
 Une fois démonté, le PCB ressemble à:
 
-![image alt text](/images/router-tenda-ac1200-mu-mimo/IMG_20210626_082437701.png)
+![image alt text](/images/router-tenda-ac1200-mu-mimo/IMG_20210626_082437701.jpg)
 
 L'important est d'identifier les composants les plus importants. Parmi ceux-ci:
 
@@ -22,7 +22,7 @@ L'important est d'identifier les composants les plus importants. Parmi ceux-ci:
 
 Apparemement il n'y a pas de puce permettant de stocker le firmware. Etrange ... Il faut regarder sous le PCB:
 
-![image alt text](/images/router-tenda-ac1200-mu-mimo/IMG_20210626_083056215.png)
+![image alt text](/images/router-tenda-ac1200-mu-mimo/IMG_20210626_083056215.jpg)
 
 On y voit une seule puce:
 
@@ -38,7 +38,7 @@ Pour identifier les pins, il existe différentes méthodes. On peut utiliser un 
 
 Ci-dessous une vue clair du port de débug UART:
 
-![image alt text](/images/router-tenda-ac1200-mu-mimo/IMG_20210626_083259482.png)
+![image alt text](/images/router-tenda-ac1200-mu-mimo/IMG_20210626_083259482.jpg)
 
 Je vais commencer par établir une hypothèse concernant les pins que je vérifierais ensuite à l'aide du multimètre.
 
@@ -64,7 +64,7 @@ De manière général, on utilise soit l'alimentation du routeur, soit l'aliment
 
 Une photo du montage branché est présenté ci-dessous:
 
-![image alt text](/images/router-tenda-ac1200-mu-mimo/IMG_20210626_090313628.png)
+![image alt text](/images/router-tenda-ac1200-mu-mimo/IMG_20210626_090313628.jpg)
 
 Comment trouver les pins sur l'Hydrabus? Easy, il suffit de le mettre en mode UART et de taper __show pins__:
 
