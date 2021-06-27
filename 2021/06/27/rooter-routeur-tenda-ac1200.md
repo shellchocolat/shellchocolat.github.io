@@ -82,9 +82,9 @@ Là, on sent qu'on a gagné !!! En fait non !!! Sur de nombreux appareil embarqu
 
 ![image alt text](/images/router-tenda-ac1200-mu-mimo/login_incorrect.png)
 
-J'ai testé les mots de passe usuels: admin, tenda, administrator, 12345, 123456789 and so on ... Il faut donc aller un peu plus loin. On a vu que la puce qui contient le firmware communique en SPI, on peut envisager de dumper le firmware et de l'analyser, ou on peut d'abord tenter de le récupérer sur internet sur le site du fournisseur !
+J'ai testé les mots de passe usuels: admin, tenda, administrator, 12345, 123456789 and so on ... Il faut donc aller un peu plus loin. On a vu que la puce qui contient le firmware communique en SPI, on peut envisager de dumper le firmware et de l'analyser, ou on peut d'abord tenter de le récupérer sur internet sur le site du fabricant !
 
-Et en effet, le firmware est disponible sur le site du fournisseur:
+Et en effet, le firmware est disponible sur le site du fabricant:
 
 * https://www.tendacn.com/fr/download/detail-3427.html
 
