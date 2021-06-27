@@ -50,17 +50,17 @@ Je vais commencer par établir une hypothèse concernant les pins que je vérifi
 
 * Sous le pin 3, je vois une resistance __R91__.
 
-Par symétrie entre les pins RX et TX, je peux estimer qu'il s'agit des pins 2 et 3 ou 3 et 2. En ce qui concerne le pin 1 (qui est associé à un condensateur), je peux en déduire qu'il s'agit de l'alimentation, car le condensateur va permettre de lisser le courant et ainsi limité les variations éventuelles de courant. Le pin 4 qui n'est relié à rien est la masse évidemment.
+Par symétrie entre les pins RX et TX, je peux estimer qu'il s'agit des pins 2 et 3 ou 3 et 2. En ce qui concerne le pin 1 (qui est associé à un condensateur), je peux en déduire qu'il s'agit de l'alimentation, car le condensateur va permettre de lisser le courant et ainsi limiter les variations éventuelles de courant. Le pin 4 qui n'est relié à rien est la masse évidemment.
 
-On peut vérifer cela aisément à l'aide du multimètre. En commençant par la masse, il suffit de mettre le multimètre en mode __continuité__ (qui bip quand le courant passe). On met un fil du multimètre sur le pin 4 et l'autre sur un élément métalique d'un des boutons par exemple. Toutes les masses devant être reliée, on doit entendre le multimètre bipper. C'est bien le cas, on a trouvé la masse.
+On peut vérifer cela aisément à l'aide du multimètre. En commençant par la masse, il suffit de mettre le multimètre en mode __continuité__ (qui bip quand le courant passe). On met un fil du multimètre sur le pin 4 et l'autre sur un élément métalique d'un des boutons par exemple. Toutes les masses devant être reliées, on doit entendre le multimètre bipper. C'est bien le cas, on a trouvé la masse.
 
 Pour vérifier l'alimentation, il faut mettre l'appareil en marche, mettre un fil du multimètre sur la masse que l'on vient de trouver, et l'autre sur le pin 1. On remarque que la tension est de __3.3V__ sans fluctuation: merci le condensateur !
 
-Pour vérifier les pins 2 et 3, ce sera par l'expérience. On va brancher un __Hydrabus__ sur le port de débug, et si l'on voit des choses s'afficher ce la signifie que l'on arrive bien à lire sur le pin __RX__, sinon c'est il faut inverser les branchements. Ce n'est pas critique de se trouver sur __RX__ et __TX__. En revanche ca l'est sur les pins de __masse__ et d'__alimentation__ car cela peut griller notre carte Hydrabus.
+Pour vérifier les pins 2 et 3, on branchera un fil sur la masse et un fil sur le pin 2, puis 3. S'il y a des fluctuations de courant, cela indique qu'il y a de la lecture/écriture (mais certainement par l'alimentation qui doit rester constante). On déterminera l'un ou l'autre par l'expérience. On va brancher un __Hydrabus__ (ou un bus pirate, ou une autre carte pouvant communiquer en UART) sur le port de débug UART, et si l'on voit des choses s'afficher cela signifie que l'on arrive bien à lire sur le pin __RX__, sinon c'est il faut inverser les branchements. Ce n'est pas critique de se tromper sur __RX__ et __TX__. En revanche ca l'est sur les pins de __masse__ et d'__alimentation__ car cela peut griller notre carte de debug.
 
-Pour l'expérience, nous n'avons pas besoin de brancher l'alimentation, car on va utiliser l'alimentation fournie par le routeur. Si l'on branche l'alimentation, on risque d'avoir 2 fois plus de puissance et donc de griller le condensateur, et donc de griller le routeur ...
+Pour l'expérience, nous n'avons pas besoin de brancher l'alimentation, car on va utiliser l'alimentation fournie par le routeur. Si l'on branche l'alimentation, on risque d'avoir 2 fois plus de puissance et donc de griller le condensateur, et donc de griller le routeur ... Si l'on s'est trompé dans le pin de masse et qu'on l'a inversé avec le pin d'alimentation, on risque de charger le carte de debug, qui est déjà charger par USB, il y aura donc alimentation et donc ... barbecue.
 
-De manière général, on utilise soit l'alimentation du routeur, soit l'alimentation de l'Hydrabus, pas les 2. L'alimentation du routeur est plus stable, on utilisera donc celle là.
+Ainsi, de manière général, on utilise soit l'alimentation du routeur, soit l'alimentation de l'Hydrabus, pas les 2. L'alimentation du routeur est plus stable, on utilisera donc celle là. On reservera l'alimentation par la carte de debug à l'analyse d'une puce simple, c'est-à-dire sans PCB.
 
 Une photo du montage branché est présenté ci-dessous:
 
@@ -78,7 +78,7 @@ Et le texte accessible depuis le port UART est le suivant:
 
 ![image alt text](/images/router-tenda-ac1200-mu-mimo/boot.png)
 
-Là, on sent qu'on a gagné !!! En fait non !!! Sur de nombreux appareil embarqué du commerce, on obtient un shell root directement en se branchant en UART, mais dans le cas présent, un mot de passe nous est demandé comme on peut le voir ci-dessous:
+Là, on sent qu'on a gagné !!! En fait non !!! Sur de nombreux appareil embarqué du commerce, on obtient un shell root directement en se branchant en UART, mais pas dans le cas présent. En effet, un mot de passe nous est demandé comme on peut le voir ci-dessous:
 
 ![image alt text](/images/router-tenda-ac1200-mu-mimo/login_incorrect.png)
 
@@ -158,9 +158,9 @@ $ hashcat -m 500 -a 0 ~/h.txt /usr/share/wordlists/rockyou.txt -r /usr/share/has
 
 ![image alt text](/images/router-tenda-ac1200-mu-mimo/hashcat.png)
 
-Et le mot de passe est cassé en moins d'une minute \\(^.^)//
+Et le mot de passe est cassé en moins d'une minute \\\\(^.^)// : __Fireitup__
 
-On retourne se connecter en UART sur le routeur et on fournis maintenant le mot de passe root, et ... Victoire ! On a un accès root sur l'appareil en cours de fonctionnement ! On y voit des binaires intéressants comme par exemple:
+On retourne se connecter en UART sur le routeur et on fournit maintenant le mot de passe root, et ... Victoire ! On a un accès root sur l'appareil en cours de fonctionnement ! On y voit des binaires intéressants comme par exemple:
 
 * alibaba_update
 
@@ -178,14 +178,22 @@ On retourne se connecter en UART sur le routeur et on fournis maintenant le mot 
 
 * et cetera
 
+![image alt text](/images/router-tenda-ac1200-mu-mimo/command_on_router.png)
+
 Mais bref, on a aussi accès à ces binaires grâce au firmware que l'on a téléchargé. On va donc pouvoir les analyser pour trouver "d'éventuelles" vulnérabilités.
 
 A titre d'exemple, un __grep__ sur le système de fichiers donne:
 
-./webroot_ro/goform/cloud.txt:"password":"NjE3MzA1NjI=",
-./webroot_ro/goform/getWanParameters.txt:"vpnPwd": "password",
-./webroot_ro/goform/GetPptpClientCfg.txt:"password":"456",
-./webroot_ro/goform/GetSambaCfg.txt:"password":"1asdf23",
-./webroot_ro/goform/GetPptpServerCfg.txt:"password": "123456789",
-./webroot_ro/goform/GetPptpServerCfg.txt:"password": "123456789",
-./webroot_ro/goform/GetPptpServerCfg.txt:"password": "123456789",
+* ./webroot_ro/goform/cloud.txt:"password":"NjE3MzA1NjI=",
+
+* ./webroot_ro/goform/getWanParameters.txt:"vpnPwd": "password",
+
+* ./webroot_ro/goform/GetPptpClientCfg.txt:"password":"456",
+
+* ./webroot_ro/goform/GetSambaCfg.txt:"password":"1asdf23",
+
+* ./webroot_ro/goform/GetPptpServerCfg.txt:"password": "123456789",
+
+* ./webroot_ro/goform/GetPptpServerCfg.txt:"password": "123456789",
+
+* ./webroot_ro/goform/GetPptpServerCfg.txt:"password": "123456789",
