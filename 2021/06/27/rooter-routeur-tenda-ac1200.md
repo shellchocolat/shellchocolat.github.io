@@ -60,7 +60,7 @@ Pour vérifier les pins 2 et 3, on branchera un fil sur la masse et un fil sur l
 
 Pour l'expérience, nous n'avons pas besoin de brancher l'alimentation, car on va utiliser l'alimentation fournie par le routeur. Si l'on branche l'alimentation, on risque d'avoir 2 fois plus de puissance et donc de griller le condensateur, et donc de griller le routeur ... Si l'on s'est trompé dans le pin de masse et qu'on l'a inversé avec le pin d'alimentation, on risque de charger le carte de debug, qui est déjà charger par USB, il y aura donc double alimentation et donc ... barbecue.
 
-Ainsi, de manière général, on utilise soit l'alimentation du routeur, soit l'alimentation de l'Hydrabus, pas les 2. L'alimentation du routeur est plus stable, on utilisera donc celle là. On reservera l'alimentation par la carte de debug à l'analyse d'une puce simple, c'est-à-dire sans PCB.
+Ainsi, de manière générale, on utilise soit l'alimentation du routeur, soit l'alimentation de l'Hydrabus, pas les 2. L'alimentation du routeur est plus stable, on utilisera donc celle là. On reservera l'alimentation par la carte de debug à l'analyse d'une puce simple, c'est-à-dire sans PCB.
 
 Une photo du montage branché est présenté ci-dessous:
 
