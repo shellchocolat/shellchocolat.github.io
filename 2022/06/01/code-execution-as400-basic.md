@@ -54,7 +54,7 @@ La __CL command__ utilisée pour compiler le programme est la suivante:
 CRTBNDCBL PGM(MYLIB/HWCBL) SRCFILE(MYLIB/QCBLSRC) SRCMBR(HELLOWORLD) OUTPUT(*PRINT) TEXT('HELLO WORLD IN COBOL')
 ```
 
-Il est possible de regarder les différentes erreurs de compilation ou messsages afficher durant la compîlation en utilisant les commandes suivantes:
+Il est possible de regarder les différentes erreurs de compilation ou messsages afficher durant la compilation en utilisant les commandes suivantes:
 
 ```
 DSPJOB ---> puis regarder le ficher de spool (4)
@@ -90,3 +90,9 @@ Erreur trouvée dans la commande CALL
 Et à la fin, lorsque la commande est bien exécutée, on y voit notre "HELLO WORLD!".
 
 On peut noter en passant, que l'ensemble des commandes exécutées se trouve dans les __logs__ ...
+
+Comme je l'ai déjà énoncé, nous sommes connectés en __TELNET__, ce qui signifie que les données circulents en clair ... On peut voir sur le screenshot ci-dessous ma commande __CALL__ avec le résultat (qui ne s'était pas affiché à l'écran je le rappelle). On voit aussi que je peux retrouver le code source de mon programme lorsque je demande à l'éditer ...
+
+![image alt text](/images/mainframe/as400/HWCBL-telnet.png)
+
+Cela signifie qu'il est possible pour un attaquant de sniffer le traffic réseau. Ainsi il peut récupérer le couple login/password lorsque quelqu'un se connecte et donc l'usurper ensuite pour se connecter à l'AS400. Mais il est également possible de simplement récupérer le nom d'utilisateur et de faire l'hypothèse que le mot de passe est le même que le nom d'utilisateur (ce qui arive très souvent sur ces systèmes).
