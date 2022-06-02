@@ -60,7 +60,9 @@ Il est possible de regarder les différentes erreurs de compilation ou messsages
 
 ```
 DSPJOB ---> puis regarder le ficher de spool (4)
+DSPJOBLOG
 WRKJOB
+WRKSBMJOB
 WRKOUTQ queue-name
 WRKSPLF
 ```
@@ -104,7 +106,7 @@ Cela signifie qu'il est possible pour un attaquant de sniffer le traffic réseau
 Pour écrire un programme en __CL__, c'es-à-dire un __CLP__, il faut que je créer un nouveau __file__ qui contiendra mes codes sources __members__:
 
 ```
-CRTSRCPF FILE(MYLIB/QCLSRC) TEXT('MY COBOL PROGRAMS')
+CRTSRCPF FILE(MYLIB/QCLSRC) TEXT('MY CL PROGRAMS')
 STRSEU SRCFILE(MYLIB/QCLSRC) SRCMBR(HELLOWORLD) TYPE(CL) OPTION(2) TEXT('HELLO WORLD IN CL')
 ```
 
