@@ -1,4 +1,4 @@
-# Execution de code sur AS400 - Cobol
+# Execution de code sur AS400
 
 On va parler ici de création d'un __hello world__ sur __AS400__ en __Cobol__. En quoi c'est intéressant?
 
@@ -17,6 +17,8 @@ Ceci étant dit, je commence par créer une __library__ qui me servira à conten
 ```
 CRTLIB LIB(MYLIB) TEXT('WILL CONTAIN MY PROGRAMS')
 ```
+
+# Cobol
 
 J'ai ensuite besoin de créer un __file__ qui contiendra mes codes sources __Cobol__ (__CRTSRCPF - CReaTe SouRCe Physical File__):
 
@@ -96,3 +98,36 @@ Comme je l'ai déjà énoncé, nous sommes connectés en __TELNET__, ce qui sign
 ![image alt text](/images/mainframe/as400/HWCBL-telnet.png)
 
 Cela signifie qu'il est possible pour un attaquant de sniffer le traffic réseau. Ainsi il peut récupérer le couple login/password lorsque quelqu'un se connecte et donc l'usurper ensuite pour se connecter à l'AS400. Mais il est également possible de simplement récupérer le nom d'utilisateur et de faire l'hypothèse que le mot de passe est le même que le nom d'utilisateur (ce qui arive très souvent sur ces systèmes).
+
+# CLP
+
+Pour écrire un programme en __CL__, c'es-à-dire un __CLP__, il faut que je créer un nouveau __file__ qui contiendra mes codes sources __members__:
+
+```
+CRTSRCPF FILE(MYLIB/QCLSRC) TEXT('MY COBOL PROGRAMS')
+STRSEU SRCFILE(MYLIB/QCLSRC) SRCMBR(HELLOWORLD) TYPE(CL) OPTION(2) TEXT('HELLO WORLD IN CL')
+```
+
+Un __CLP__ est grosso-modo l'équivalent d'un programme bash. Il regroupe les différentes commandes __CL__ au sein d'un fichier que l'on pourra rendre exécutable.
+
+Le programme que je créer est le suivant:
+
+```
+PGM
+  SNDPGMMSG MSG('HELLO WORLD')
+ENDPGM
+```
+
+La commande __CL__ __SNDPGMMSG__ (__SeNDProGraMMeSsaGe__) permet d'envoyer un message sur la console.
+
+Pour le compiler et l'exécuter, j'utilise les commandes __CL__ suivantes:
+
+```
+CRTBNDCL PGM(MYLIB/HWCL) SRCFILE(MYLIB/QCLSRC) SRCMBR(HELLOWORLD) OUTPUT(*PRINT) TEXT('HELLO WORLD IN CL')
+CALL PGM(MYLIB/HWCL)
+```
+
+Le résultat est présenté ci-dessous:
+
+![image alt text](/images/mainframe/as400/HWCL-result.png)
+
