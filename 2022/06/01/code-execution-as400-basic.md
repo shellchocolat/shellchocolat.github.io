@@ -4,7 +4,7 @@ On va parler ici de création d'un __hello world__ sur __AS400__ en __Cobol__. E
 
 L'__AS400__ est une machine d'IBM qui peut-être vue comme appartenant à la famille des mainframes. L'OS qui tourne sur un __AS400__ et l'__OS400__. Comprendre le fonctionnement d'un __AS400__ permet donc d'apréhender les sytèmes underground qui font tourner le monde.
 
-Pour se connecter sur un AS400, il faut utiliser __TELNET__ (port 22). Le plus simple est d'utiliser un émulateur __TN3270__. Pour ma part j'utilise un __TN5250j__.
+Pour se connecter sur un AS400, il faut utiliser __TELNET__ (port 23). Le plus simple est d'utiliser un émulateur __TN3270__. Pour ma part j'utilise un __TN5250j__.
 
 Cet article sera essentiellement un aide-mémoire pour avoir une trace des commandes que j'ai utilisé. En parlant de ça, une commande sur AS400 s'appelle une __CL command__. Non, ce n'est pas l'abréviation de __Command Line__, mais celle de __Control Language__.
 
