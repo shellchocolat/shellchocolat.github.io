@@ -126,10 +126,6 @@ Si j'avais eu un paramètre, il aurait fallu les passer sur une valeur de __256 
 
 Si j'avais eu un second paramètre à ma fonction, il aurait fallu que je mette ce second paramètre au format 256 bits, puis que je l'accole à la valeur ci-dessous (sans oublier de recalculer la valeur du "hash tronqué" de la fonction __helloworld(uint8, uint8)__ par example).
 
-Vous connaissez les collisions de hash? Ce serait sympa de faire un __smart contract__ et d'assurer que les fonctions ont le même "hash tronqué" pour voir comment on casse la blockchaine :D :D
-
-Je pense que ce n'est pas si difficile de trouver 2 hashs __keccak256__ qui ont les mêmes 4 premiers bytes :D :D
-
 Pour ceux qui veulent aller plus loin, la documentation Ethereum est un __must read__: __https://ethdocs.org/en/latest/__
 
 
