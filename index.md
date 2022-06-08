@@ -2,6 +2,8 @@
 
 ## 2022
 
+[2022/06/08 - Smart Contract - basic](2022/06/08/smart-contract-basic.md)
+
 [2022/06/01 - Execution de code sur AS400](2022/06/01/code-execution-as400-basic.md)
 
 [2022/05/04 - Driver et injection de code](2022/05/04/driver-injection-code.md)
